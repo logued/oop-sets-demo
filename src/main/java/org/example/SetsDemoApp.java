@@ -1,7 +1,7 @@
 package org.example;
 
 /**
- * Set  (part of the Java Collections Framework)  Revised: February 2022
+ * Set (part of the Java Collections Framework)  Revised: February 2023
  *
  * A Set is a collection that does NOT ALLOW DUPLICATE elements.
  *
@@ -12,11 +12,12 @@ package org.example;
  * so access, insert and delete are all very fast: O(1).
  * The hashCode() and equals() methods MUST be implemented for HashSet in the
  * class of the elements being used, as both methods are used by the internal
- * hash table mechanism.
+ * hash table mechanism. (These are inbuilt for String, Integer and Double)
  *
  * TreeSet uses a Binary Tree structure, so access is somewhat slower O(log n).
- * However, it maintains elements in their "natural ordering", by elements
- * implementing Comparable, or by the element class supplying a Comparator.
+ * However, it maintains elements in their "natural ordering" elements
+ * The element class must implement Comparable, or an appropriate Comparator
+ * must be supplied in the TreeSet constructor.
  *
  * The "Set" interface defines a number of operations common to
  * all Sets.  It is good practice to use a reference of interface type Set to
@@ -58,13 +59,14 @@ public class SetsDemoApp {
         names.add("Donald");
         names.add("John");
         names.add("Bill");
-        names.add("Bill");  // duplicate element will not be added (nothing changes in the Set)
+        names.add("Bill");  // duplicate element will NOT be added (nothing changes in the Set)
         names.add("Adam");
         names.add("Niamh");
         names.remove("Donald");
 
         // The contains() method gives fast 'hash table' access O(1)
-        // It relies on hashCode() and equals() methods to match elements.
+        // It relies on hashCode() and equals() methods to match elements
+        // which are in-built in the String class.
 
         String name = "John";
         if (names.contains(name)) {
@@ -79,10 +81,9 @@ public class SetsDemoApp {
 
     public void treeSetOfString()    // TreeSet - sorted order maintained
     {
-        Set<String> cars = new TreeSet<>(); // TreeSet maintains sorted order
-        // using a Binary Tree structure
-
-        // The order of elements here is determined by the compareTo() method
+        Set<String> cars = new TreeSet<>(); // TreeSet maintains order
+                                            // using a Binary Tree structure
+        // The order of elements here is determined by the inbuilt compareTo() method
         // provided in the String class. (String class implements the Comparable interface)
 
         cars.add("Nissan");
@@ -113,10 +114,14 @@ public class SetsDemoApp {
         // See the compareTo() method in the Book class which compares firstly on book code
         // and then on title (i.e "title within code")
 
-        books.add(new Book(9999, "Jaws"));      // won't be added, NO Duplicates books allowed in a Set
-        books.add(new Book(9999, "Jaws"));      // uses compareTo() to identify duplicates.
-        books.add(new Book(7777, "Jaws"));      // this is allowed, as it is not a duplicate book
+        books.add(new Book(9999, "Jaws"));
+        // Next one is a Duplicate, according to compareTo() method. So, It won't be added
+        // The compareTo() compares both book code and title.
+        books.add(new Book(9999, "Jaws"));
+
+        books.add(new Book(7777, "Jaws"));      // this is allowed as code 777 has not already been added.
         books.add(new Book(2222, "Heist"));
+
         books.add(new Book(4444, "Alien"));
         books.add(new Book(1111, "Tatoos"));
         books.add(new Book(3333, "Life on Earth"));
@@ -135,16 +140,19 @@ public class SetsDemoApp {
         // This takes priority over the compareTo() method implemented
         // in the Book class.
         // We must write the comparator (see ComparatorBookTitleCode class)
+        // and pass it into the TreeSet constructor.
 
         Set<Book> books = new TreeSet<>( new ComparatorBookTitleCode() );
 
         books.add(new Book(9999, "Jaws"));
-        books.add(new Book(9999, "Jaws"));     // no duplicates, compareTo() used
-        books.add(new Book(7777, "Jaws"));      // this is allowed, as it is not a duplicate book
+        books.add(new Book(9999, "Jaws"));     // Duplicate - will not be added.
+
+        books.add(new Book(7777, "Jaws"));      // this is allowed
+
         books.add(new Book(9999, "Stardust"));
         books.add(new Book(2222, "Heist"));
         books.add(new Book(4444, "Alien"));
-        books.add(new Book(1111, "Tatoos"));
+        books.add(new Book(1111, "Tattoos"));
         books.add(new Book(3333, "Life on Earth"));
 
         System.out.println("Books from the TreeSet - no duplicates,  in order "
@@ -155,7 +163,7 @@ public class SetsDemoApp {
         }
 
         //TODO
-        // Write a second (separate) comparator class ComparatorCodeTitle that will order elements
+        // Write a second (separate) comparator class ComparatorCodeTitle that will compare elements
         // by Title within Code  (ie, book code gets priority, and then book title).
         // Change the argument passed to the TreeSet constructor and check that the output
         // matches your expected output.
@@ -169,11 +177,12 @@ public class SetsDemoApp {
         // if Book objects are to be stored in a HashSet. (Both methods
         // are used in the hashing process).
         // Note that NO sorted order is maintained, not even the order they were
-        // added in. (unlike in a List , where the order is maintained - until modified)
+        // added in. (unlike in a List or TreeSet , where the order is maintained - until modified)
+        // HashSet gives us very fast access, add and remove.
 
         books.add(new Book(9999, "Jaws"));
         books.add(new Book(9999, "Jaws"));     // NO Duplicates allowed in Set
-        books.add(new Book(7777, "Jaws"));      // this is allowed, as it is not a duplicate book
+        books.add(new Book(7777, "Jaws"));      // this is allowed
         books.add(new Book(9999, "Stardust"));
         books.add(new Book(2222, "Heist"));
         books.add(new Book(4444, "Alien"));
@@ -198,9 +207,9 @@ public class SetsDemoApp {
 
 //        System.out.println("Display set using Iterator:");
 //
-//         Iterator iter = set.iterator();
-//         while (iter.hasNext())
-//            System.out.println(iter.next());
+//         Iterator iterator = set.iterator();
+//         while (iterator.hasNext())
+//            System.out.println(iterator.next());
 
     }
 }

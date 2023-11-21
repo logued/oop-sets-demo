@@ -1,7 +1,7 @@
 package org.example;
 
 /**
- * Set (part of the Java Collections Framework)  Revised: February 2023
+ * Set (part of the Java Collections Framework)  Revised: November 2023
  *
  * A Set is a collection that does NOT ALLOW DUPLICATE elements.
  *
@@ -15,13 +15,14 @@ package org.example;
  * hash table mechanism. (These are inbuilt for String, Integer and Double)
  *
  * TreeSet uses a Binary Tree structure, so access is somewhat slower O(log n).
- * However, it maintains elements in their "natural ordering" elements
+ * However, it maintains elements in their "natural ordering".
  * The element class must implement Comparable, or an appropriate Comparator
  * must be supplied in the TreeSet constructor.
  *
  * The "Set" interface defines a number of operations common to
  * all Sets.  It is good practice to use a reference of interface type Set to
  * refer to a HashSet or TreeSet object.
+ * i.e.  Set<String> names = new HashSet<>();
  *
  * Sets can store only objects (and not primitive types; so Integer but not int)
  */
@@ -42,10 +43,10 @@ public class SetsDemoApp {
     public void start() {
         System.out.println("Set Demonstration App - Sets store UNIQUE values - No Duplicates allowed");
         hashSetOfString();      // HashSet of String objects
-        treeSetOfString();      // TreeSet of String objects, sorts elements
-        treeSetOfBookObjects(); // TreeSet of Books sorted using Comparable - compareTo()
-        treeSetWithComparator();// TreeSet of Books, sorted using a Comparator "ComparatorBookTitleCode"
-        hashSetOfBookObjects(); // HashSet of Book object relies on hascCode() and equals() methods
+        // treeSetOfString();      // TreeSet of String objects, sorts elements
+        // treeSetOfBookObjects(); // TreeSet of Books sorted using Comparable - compareTo()
+        // treeSetWithComparator();// TreeSet of Books, sorted using a Comparator "ComparatorBookTitleCode"
+        // hashSetOfBookObjects(); // HashSet of Book object relies on hashCode() and equals() methods
     }
 
     public void hashSetOfString()
@@ -67,6 +68,9 @@ public class SetsDemoApp {
         // The contains() method gives fast 'hash table' access O(1)
         // It relies on hashCode() and equals() methods to match elements
         // which are in-built in the String class.
+
+        // A common use-case for Set is to use it as a fast mechanism to look up
+        // a value in a set of values.  We check that the set contains the value.
 
         String name = "John";
         if (names.contains(name)) {
@@ -143,6 +147,7 @@ public class SetsDemoApp {
         // and pass it into the TreeSet constructor.
 
         Set<Book> books = new TreeSet<>( new ComparatorBookTitleCode() );
+        // alternatively, you could pass a lambda to specify the compare
 
         books.add(new Book(9999, "Jaws"));
         books.add(new Book(9999, "Jaws"));     // Duplicate - will not be added.

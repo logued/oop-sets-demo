@@ -40,34 +40,16 @@ public class Book implements Comparable<Book> {
     }
 
     @Override
-    public int hashCode()
-    {
-        int hash = 7;
-        hash = 47 * hash + this.code;
-        hash = 47 * hash + Objects.hashCode(this.title);
-        return hash;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Book book = (Book) o;
+        return code == book.code && title.equals(book.title);
     }
 
     @Override
-    public boolean equals(Object obj)
-    {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Book other = (Book) obj;
-        if (this.code != other.code) {
-            return false;
-        }
-        if (!Objects.equals(this.title, other.title)) {
-            return false;
-        }
-        return true;
+    public int hashCode() {
+        return Objects.hash(code, title);
     }
 
     @Override

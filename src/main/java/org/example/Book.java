@@ -1,9 +1,7 @@
-package org.example;
-
-
-/*                                             Reviewed: January 2019
+package org.example;        // DL note to self, Student may be better example, fbame, lname, dob, an no pk in fields
+/*                       Reviewed: Nov 23
  *
- *  Book class  - focus: hashCode, equals(), compareTo()
+ *  Book class  - focus: hashCode(), equals(), compareTo()
  *
  * HashSet
  *  If objects of this class are to be stored in a HashSet, then this
@@ -16,40 +14,49 @@ package org.example;
  *
  */
 
-
 import java.util.Objects;
 
-public class Book implements Comparable<Book> {
+public class Book implements Comparable<Book>           // Comparable needed for TreeSet (if no Comparator provided)
+{
+    private final int code;         // final makes these immutable
+    private final String title;     //    immutable (unchangable) objects are desired as if changes are made to a
+                                    //    field then the hash mechanism will file
 
-    int code;       // i.e. scanner code
-    String title;
-
-    public Book(int code, String title)
-    {
+    public Book(int code, String title) {
         this.code = code;
         this.title = title;
     }
 
+    /**
+     * Provides the "Natural Ordering" of elements - needed for TreeSet sample.
+     * @param other the object to be compared.
+     * @return
+     */
     @Override
-    public int compareTo(Book other)
-    {
-        // Concatenate (join) the code and title fields for comparison purposes.
-        // Sorts on "title within book-code" order.
-
-        return (Integer.toString(this.code)+this.title).compareTo(Integer.toString(other.code)+other.title);
+    public int compareTo(Book other)    {
+        return Integer.compare(this.code,other.code);
     }
+
+
+    /**
+     *  equals() and hashCode() are required for using HashSet
+     *  in this case we are comparing only on code field.
+     *
+     * @param o - other Book object
+     * @return true or false
+     */
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Book book = (Book) o;
-        return code == book.code && title.equals(book.title);
+        return code == book.code; //  comparing only on code (int)
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(code, title);
+        return Objects.hash(code);
     }
 
     @Override

@@ -1,15 +1,15 @@
 package org.example;
 
 /**
- * Set (part of the Java Collections Framework)  Revised: November 2023
+ * Set (part of the Java Collections Framework)  //  November 2024
  *
  * A Set is a collection of objects that:
  * - does NOT ALLOW DUPLICATE elements
- * - allows us to check if a Set contains a specific element or not
+ * - allows us to check if the Set contains a specific element or not
  *
  * Use-Case
- * A common use for a Set is to check if a particular value is
- * present in a Set very quickly.
+ * A common use for a Set is to rapidly check if a particular value is
+ * present in a Set.
  *
  * There are two 'concrete' class implementations of the Set interface:
  * (1) HashSet and (2) TreeSet
@@ -30,21 +30,22 @@ package org.example;
  *
  * The "Set" interface defines a number of operations common to
  * all Sets.  It is common practice to use a reference of interface
- * type Set to refer to a HashSet or TreeSet object.
- * i.e.  Set<String> names = new HashSet<>();
+ * type "Set" to refer to a HashSet or TreeSet object.
+ * i.e.  Set<String> setOfNames = new HashSet<>();
  *
  * Sets can only store objects (and not primitive types; so Integer but not int)
  */
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class SetsDemoApp {
+public class MainApp {
 
     public static void main(String[] args)
     {
-        SetsDemoApp app = new SetsDemoApp();
+        MainApp app = new MainApp();
         app.start();
  }
 
@@ -61,7 +62,7 @@ public class SetsDemoApp {
     {
         HashSet<String> namesSet = new HashSet<>();  // note reference of type Set
 
-        // Note that the String class implements the hashCode() and the equals()
+        // Note that the String class already implements the hashCode() and the equals()
         // methods which are required to use a HashSet
 
         namesSet.add("Zoe");
@@ -71,19 +72,20 @@ public class SetsDemoApp {
         namesSet.add("Bill");  // duplicate element will NOT be added (nothing changes in the Set)
         namesSet.remove("Donald");
 
-        // The contains() method provides very fast check to see if a value is in the set. O(1)
+        // The contains() method provides very fast access to check if a value is in the set. O(1)
         // It relies on hashCode() and equals() methods to locate and match elements
         // which are in-built in the String class.
 
         // A common use-case for Set is to use it as a fast mechanism to look up
-        // a value in a set of values.  We check that the set contains the value.
+        // a value in a set of values.  We use the contains() method to perform the check.
 
         String name = "John";
         if (namesSet.contains(name)) {
             System.out.println(name + " is contained in the Set.");
         }
-        else
+        else {
             System.out.println(name + " NOT found in the Set");
+        }
 
         System.out.println("Display all elements in the HashSet - no duplicates, and NOT in order");
 
@@ -119,7 +121,7 @@ public class SetsDemoApp {
 
     /**
      * Using a TreeSet to store Book objects.
-     * TreeSet maintains an ORDERING of its elements. To maintain an ordering,
+     * TreeSet maintains an ORDERING of its elements. To configure the ordering,
      * the Book class must implement the Comparable interface
      * and thus, implement the compareTo() method.  (or provide a Comparator)
      * In this sample, the compareTo() method compares based
@@ -131,8 +133,9 @@ public class SetsDemoApp {
         TreeSet<Book> bookTreeSet = new TreeSet<>();
 
         bookTreeSet.add(new Book(9999, "Jaws"));
-        // Next one is a Duplicate, according to compareTo() method. So, it won't be added
-        // The compareTo() compares  book code
+        // Next one is a duplicate, according to compareTo() method, as teh code is the same
+        // So, it won't be added to the set a second time.
+        // The compareTo() compares  on book code.
         bookTreeSet.add(new Book(9999, "Jaws"));
 
         bookTreeSet.add(new Book(7777, "Jaws"));
@@ -167,12 +170,14 @@ public class SetsDemoApp {
     public void treeSetWithComparator()
     {
         Set<Book> bookTreeSet = new TreeSet<>( new bookTitleComparator() );
-        // alternatively, you could pass a lambda to specify the compare
+        // alternatively, you could use Comparator.comparing(....)
+        // Set<Book> bookTreeSet = new TreeSet<>( Comparator.comparing(Book::getTitle) );
 
+        // The effect is to create a set of books each with a unique title.
         bookTreeSet.add(new Book(9999, "Jaws"));
         bookTreeSet.add(new Book(9999, "Jaws"));     // Duplicate - will not be added.
 
-        bookTreeSet.add(new Book(7777, "Jaws"));      // this is allowed
+        bookTreeSet.add(new Book(7777, "Jaws"));
 
         bookTreeSet.add(new Book(9999, "Stardust"));
         bookTreeSet.add(new Book(2222, "Heist"));
@@ -201,6 +206,8 @@ public class SetsDemoApp {
      *  Note that NO sorted order is maintained, not even the order they were
      *  added in. (unlike in a List or TreeSet , where the order is maintained - until modified)
      *  HashSet gives us very fast access ( contains() ), add() and remove().  O(1)
+     *  (Comparable and comparators are not relevant for a HashSet, because
+     *  the values are not going to be sorted.)
      */
     public void hashSetOfBookObjects()
     {
@@ -237,19 +244,23 @@ public class SetsDemoApp {
      */
     public void displayStringElements(Set<String> set)
     {
+        // Iterate over all the elements in teh Set
         for (String str : set)
             System.out.print(str + ", ");
 
+        // Note that if the set is a HashSet then the elements will be printed in NO
+        // particular order, but if the set is a TreeSet, then the elements are printed in the
+        // order determined for that TreeSet (by Comparable or a Comparator)
         System.out.println();
 
-        /**
-         *   the for-each loop above is equivalent to using the following iterator
-         *
-         *   Iterator<String> iterator = set.iterator();
-         *   while (iterator.hasNext()) {
-         *       String str = iterator.next();
-         *       System.out.print(str+", ");
-         *   }
+        /*
+            the for-each loop above is equivalent to using the following iterator
+
+            Iterator<String> iterator = set.iterator();
+            while (iterator.hasNext()) {
+                String str = iterator.next();
+                System.out.print(str+", ");
+            }
          */
     }
 }

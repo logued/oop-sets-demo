@@ -26,17 +26,17 @@ package org.example;
  * The element class must implement Comparable, or an appropriate Comparator
  * must be supplied in the TreeSet constructor.
  * When we iterate over the elements, they will always be in the order
- * determined by the compareTo() method, or the compare() method.
+ * determined by the compareTo() method (Comparable), or
+ * the compare() method implemented in a Comparator.
  *
  * The "Set" interface defines a number of operations common to
  * all Sets.  It is common practice to use a reference of interface
  * type "Set" to refer to a HashSet or TreeSet object.
  * i.e.  Set<String> setOfNames = new HashSet<>();
  *
- * Sets can only store objects (and not primitive types; so Integer but not int)
+ * Sets can only store objects (and not primitive types; so 'Integer' but not 'int')
  */
 
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
@@ -89,14 +89,14 @@ public class MainApp {
 
         System.out.println("Display all elements in the HashSet - no duplicates, and NOT in order");
 
-        displayStringElements(namesSet);
+        displaySetElements(namesSet);
     }
 
     /**
      * TreeSet maintains order of its elements (using a Binary Tree structure internally).
      * The order of elements is determined by the inbuilt compareTo() method
      * provided in the String class. (String class implements the Comparable interface)
-     * or, by a Comparator passed into the TreeSet constructor.
+     * Alternative orderings can be specified by a Comparator passed into the TreeSet constructor.
      */
     public void treeSetOfString()
     {
@@ -110,7 +110,7 @@ public class MainApp {
         carsTreeSet.add("Opel");
 
         System.out.println("Display Cars (String) from the TreeSet - no duplicates, in order");
-        displayStringElements(carsTreeSet);
+        displaySetElements(carsTreeSet);
 
         //TODO
         // Write code to find out if the 'carsTreeSet' Set contains the given car or not
@@ -124,7 +124,7 @@ public class MainApp {
      * TreeSet maintains an ORDERING of its elements. To configure the ordering,
      * the Book class must implement the Comparable interface
      * and thus, implement the compareTo() method.  (or provide a Comparator)
-     * In this sample, the compareTo() method compares based
+     * In this sample, the compareTo() method compares elements based
      * on the Book code field. So, two Books with the same code
      * cannot be added to the Set.  (as a Set does not allow duplicates)
      */
@@ -133,9 +133,9 @@ public class MainApp {
         TreeSet<Book> bookTreeSet = new TreeSet<>();
 
         bookTreeSet.add(new Book(9999, "Jaws"));
-        // Next one is a duplicate, according to compareTo() method, as teh code is the same
+        // Next one is a duplicate, according to compareTo() method, as the book code is the same.
         // So, it won't be added to the set a second time.
-        // The compareTo() compares  on book code.
+        // The compareTo() compares on book code.
         bookTreeSet.add(new Book(9999, "Jaws"));
 
         bookTreeSet.add(new Book(7777, "Jaws"));
@@ -238,11 +238,11 @@ public class MainApp {
          }
 
     /**
-     * Display all elements from a Set. (
+     * Display all elements from a Set. (of String)
      * @param set  - A Set (HashSet or TreeSet)
      * The interface type 'Set' is used to accept either HashSet or TreeSet
      */
-    public void displayStringElements(Set<String> set)
+    public void displaySetElements(Set<String> set)
     {
         // Iterate over all the elements in teh Set
         for (String str : set)
